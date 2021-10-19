@@ -6,16 +6,9 @@ import com.aurelius.springrealworld.facade.model.PageModel;
 import com.aurelius.springrealworld.repository.ArticleRepository;
 import com.aurelius.springrealworld.repository.entities.QArticleEntity;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import liquibase.util.StringUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class ArticleFacade {
@@ -40,7 +33,5 @@ public class ArticleFacade {
         }
 
         return articleMapper.fromPageModel(articleRepository.findAll(where, PageRequest.of(offset, limit)));
-//        return articleMapper.fromPageModel(articleRepository.filterSome(authorUsername, tag, PageRequest.of(offset, limit)));
-//        return articleMapper.fromPageModel(articleRepository.findAll(PageRequest.of(offset, limit)));
     }
 }
