@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: createUser
+      author: kim.loong.tan
+      changes:
+        - sqlFile:
+            path: changesets/createUsersTable.sql
+            relativeToChangelogFile: true
+#  - changeSet:
+#      id: createUserFollow
+#      author: kim.loong.tan
+#      changes:
+#        - sqlFile:
+#            path: changesets/createUserFollowTable.sql
+#            relativeToChangelogFile: true
+  - changeSet:
+      id: createArticle
+      author: kim.loong.tan
+      changes:
+        - sqlFile:
+            path: changesets/createArticleTable.sql
+            relativeToChangelogFile: true
+  - changeSet:
+      id: createTag
+      author: kim.loong.tan
+      changes:
+        - sqlFile:
+            path: changesets/createTagTable.sql
+            relativeToChangelogFile: true
