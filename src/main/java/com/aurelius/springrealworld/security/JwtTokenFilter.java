@@ -33,14 +33,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (header == null || !header.startsWith("Bearer ")) {
+        final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             chain.doFilter(request, response);
             return;
         }
 
         // Get jwt token and validate
-        final String token = header.split(" ")[1].trim();
+        final String token = authorizationHeader.split(" ")[1].trim();
         if (!jwtTokenUtil.isJwtTokenValid(token)) {
             chain.doFilter(request, response);
             return;
@@ -48,7 +48,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         // Get user identity and set it on the spring security context
         UserDetails userDetails = toUser(userRepository
-                .findByUsername(jwtTokenUtil.getUsername(token))
+                .findByUsernameEqualsIgnoreCase(jwtTokenUtil.getUsername(token))
                 .orElseThrow(() -> new UsernameNotFoundException("Username from access token not found in database")));
 
         UsernamePasswordAuthenticationToken

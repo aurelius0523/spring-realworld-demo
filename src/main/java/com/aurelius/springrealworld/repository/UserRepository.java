@@ -7,7 +7,7 @@ import org.springframework.lang.NonNull;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    Optional<UserEntity> findByUsername(String username);
+    Optional<UserEntity> findByUsernameEqualsIgnoreCase(String username);
 
     Optional<UserEntity> findByEmailEqualsIgnoreCaseAndPasswordEquals(@NonNull String email, @NonNull String password);
 }

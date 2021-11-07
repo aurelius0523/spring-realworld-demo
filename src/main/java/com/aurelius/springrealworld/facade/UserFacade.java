@@ -8,12 +8,10 @@ import com.aurelius.springrealworld.facade.model.UserModel;
 import com.aurelius.springrealworld.repository.UserRepository;
 import com.aurelius.springrealworld.repository.entities.UserEntity;
 import com.aurelius.springrealworld.security.JwtTokenUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -58,7 +56,7 @@ public class UserFacade {
     }
 
     protected void checkIfUsernameExists(String username) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUsernameEqualsIgnoreCase(username);
 
         if (optionalUserEntity.isPresent()) {
             throw new BusinessValidationException("User already exists");
