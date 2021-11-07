@@ -14,13 +14,14 @@ public class JwtTokenUtil {
 
     private final String jwtSecret = "zdtlD3JK56m6wTTgsNFhqzjqP";
     private final String jwtIssuer = "example.io";
+    private final Date ONE_WEEK_EXPIRATION_FROM_NOW = new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000);
 
     public String generateAccessToken(UserEntity user) {
         return Jwts.builder()
                 .setSubject(String.format("%s", user.getUsername()))
                 .setIssuer(jwtIssuer)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 1 week
+                .setExpiration(ONE_WEEK_EXPIRATION_FROM_NOW)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }

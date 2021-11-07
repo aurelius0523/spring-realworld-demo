@@ -36,32 +36,21 @@ public class UserFacade {
     public UserModel createUser(CreateUserRequest request) {
         checkIfUsernameExists(request.getUsername());
 
-        UserEntity userEntity = UserEntity.builder()
+        UserEntity savedUserEntity = userRepository.save(UserEntity.builder()
                 .email(request.getEmail())
                 .username(request.getUsername())
                 .password(request.getPassword())
-                .build();
+                .build());
 
-        return userMapper.toModel(userRepository.save(userEntity));
+        return userMapper.toModel(savedUserEntity, jwtTokenUtil.generateAccessToken(savedUserEntity));
     }
 
     public PageModel<UserModel> getUserList(int limit, int offset) {
         return userMapper.fromPageModel(userRepository.findAll(PageRequest.of(offset, limit)));
     }
 
-    public UserModel register(String username, String password) {
-        checkIfUsernameExists(username);
-
-        UserEntity savedUserEntity = userRepository.save(UserEntity.builder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
-                .build());
-
-        return userMapper.toModel(savedUserEntity);
-    }
-
     public UserModel login(String username, String password) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findByEmailAndPassword(username, password);
+        Optional<UserEntity> optionalUserEntity = userRepository.findByEmailEqualsIgnoreCaseAndPasswordEquals(username, password);
 
         UserEntity userEntity = optionalUserEntity.orElseThrow(() -> {throw new BusinessValidationException("Invalid username or password");});
 

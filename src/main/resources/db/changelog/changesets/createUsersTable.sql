@@ -12,13 +12,13 @@ CREATE TABLE users
 
 CREATE UNIQUE INDEX users_username on users(username);
 
-INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('phil@gmail.com', 'phil', 'Your friendly community realtor', '', 'password', now(), now());
-INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('haley@gmail.com', 'haley', 'Budding fashionista blogger', '', 'password', now(), now());
-INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('alex@gmail.com', 'alex', 'Will build rocket for humanity', '', 'password', now(), now());
-INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('luke@gmail.com', 'luke', 'I will stalk you from my room', '', 'password', now(), now());
-INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('claire@gmail.com', 'claire', 'House is a mess, home is the best', '', 'password', now(), now());
-INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('jay@gmail.com', 'jay', 'I love my family and I lead them', '', 'password', now(), now());
-INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('gloria@gmail.com', 'gloria', 'You think I am a gold digger. No wonder I do not dig you', '', 'password', now(), now());
-INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('manny@gmail.com', 'manny', 'Keeping it suave', '', 'password', now(), now());
-INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('mitchell@gmail.com', 'mitchell', 'Lawyer by day, in the closet by night', '', 'password', now(), now());
-INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('cameron@gmail.com', 'cameron', 'Clown is not a joke', '', 'password', now(), now());
+INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('phil@gmail.com', 'phil', 'Your friendly community realtor', '', 'BykM9bbcyLU_xcA', now(), now());
+INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('haley@gmail.com', 'haley', 'Budding fashionista blogger', '', 'BykM9bbcyLU_xcA', now(), now());
+INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('alex@gmail.com', 'alex', 'Will build rocket for humanity', '', 'BykM9bbcyLU_xcA', now(), now());
+INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('luke@gmail.com', 'luke', 'I will stalk you from my room', '', 'BykM9bbcyLU_xcA', now(), now());
+INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('claire@gmail.com', 'claire', 'House is a mess, home is the best', '', 'BykM9bbcyLU_xcA', now(), now());
+INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('jay@gmail.com', 'jay', 'I love my family and I lead them', '', 'BykM9bbcyLU_xcA', now(), now());
+INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('gloria@gmail.com', 'gloria', 'You think I am a gold digger. No wonder I do not dig you', '', 'BykM9bbcyLU_xcA', now(), now());
+INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('manny@gmail.com', 'manny', 'Keeping it suave', '', 'BykM9bbcyLU_xcA', now(), now());
+INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('mitchell@gmail.com', 'mitchell', 'Lawyer by day, in the closet by night', '', 'BykM9bbcyLU_xcA', now(), now());
+INSERT INTO users (email, username, bio, image, password, created_at, modified_at) VALUES ('cameron@gmail.com', 'cameron', 'Clown is not a joke', '', 'BykM9bbcyLU_xcA', now(), now());
