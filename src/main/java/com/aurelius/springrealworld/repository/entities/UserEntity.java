@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "users")
-public class UserEntity  extends BaseEntity {
+public class UserEntity extends BaseEntity {
     @Column(name = "email")
     private String email;
 
