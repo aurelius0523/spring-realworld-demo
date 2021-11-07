@@ -29,6 +29,7 @@ public class UserMapper extends PageMapper<UserEntity, UserModel> {
 
     public UserModel toModel(UserEntity userEntity) {
         return UserModel.builder()
+                .id(String.valueOf(userEntity.getId()))
                 .bio(userEntity.getBio())
                 .username(userEntity.getUsername())
                 .email(userEntity.getEmail())

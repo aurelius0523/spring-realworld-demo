@@ -2,17 +2,15 @@ package com.aurelius.springrealworld.controller;
 
 import com.aurelius.springrealworld.controller.request.CreateUserRequest;
 import com.aurelius.springrealworld.controller.request.LoginRequest;
+import com.aurelius.springrealworld.controller.request.UpdateUserRequest;
 import com.aurelius.springrealworld.facade.UserFacade;
 import com.aurelius.springrealworld.facade.model.PageModel;
 import com.aurelius.springrealworld.facade.model.UserModel;
-import com.aurelius.springrealworld.security.JwtTokenUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.aurelius.springrealworld.security.CustomUserDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping
@@ -28,15 +26,15 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public UserModel getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
-        return userFacade.getByUserName(userDetails.getUsername());
+    public UserModel getCurrentUser(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return userFacade.getByUserName(customUserDetails.getUsername());
     }
 
-    //    @PutMapping("/user")
-//    public UserModel updateCurrentUser() {
-//        return null;
-//    }
-//
+    @PutMapping("/user")
+    public UserModel updateCurrentUser(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateUserRequest updateUserRequest) {
+        return userFacade.updateUser(customUserDetails.getUsername(), updateUserRequest);
+    }
+
     @GetMapping("/users")
     public PageModel<UserModel> getUserList(
             @RequestParam(value = "limit", required = false, defaultValue = "20") int limit,

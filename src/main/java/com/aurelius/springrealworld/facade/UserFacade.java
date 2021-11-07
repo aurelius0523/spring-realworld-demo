@@ -1,6 +1,7 @@
 package com.aurelius.springrealworld.facade;
 
 import com.aurelius.springrealworld.controller.request.CreateUserRequest;
+import com.aurelius.springrealworld.controller.request.UpdateUserRequest;
 import com.aurelius.springrealworld.exception.BusinessValidationException;
 import com.aurelius.springrealworld.facade.mapper.UserMapper;
 import com.aurelius.springrealworld.facade.model.PageModel;
@@ -8,6 +9,7 @@ import com.aurelius.springrealworld.facade.model.UserModel;
 import com.aurelius.springrealworld.repository.UserRepository;
 import com.aurelius.springrealworld.repository.entities.UserEntity;
 import com.aurelius.springrealworld.security.JwtTokenUtil;
+import org.hibernate.sql.Update;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,10 +47,22 @@ public class UserFacade {
     }
 
     public UserModel getByUserName(String username) {
-        UserEntity userModel = userRepository.findByUsernameEqualsIgnoreCase(username)
+        UserEntity userEntity = userRepository.findByUsernameEqualsIgnoreCase(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 
-        return userMapper.toModel(userModel);
+        return userMapper.toModel(userEntity);
+    }
+
+    public UserModel updateUser(String username, UpdateUserRequest updateUserRequest) {
+        UserEntity userEntity = userRepository.findByUsernameEqualsIgnoreCase(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+
+        userEntity.setBio(updateUserRequest.getBio());
+        userEntity.setImage(updateUserRequest.getImage());
+
+        UserEntity savedUserEntity = userRepository.save(userEntity);
+
+        return userMapper.toModel(savedUserEntity);
     }
 
     public PageModel<UserModel> getUserList(int limit, int offset) {

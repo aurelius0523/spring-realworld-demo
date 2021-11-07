@@ -62,7 +62,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
-    private User toUser(UserEntity userEntity) {
-       return new User(userEntity.getUsername(), userEntity.getPassword(), new ArrayList<>());
+    private CustomUserDetails toUser(UserEntity userEntity) {
+       return new CustomUserDetails(userEntity.getUsername(), userEntity.getPassword(), new ArrayList<>());
     }
 }

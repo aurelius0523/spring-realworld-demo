@@ -10,6 +10,7 @@ public class UserModel {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String token;
 
+    private String id;
     private String email;
     private String username;
     private String bio;
