@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @PostMapping("/users/login")
-    public String login(@Valid @RequestBody LoginRequest loginRequest) {
+    public UserModel login(@Valid @RequestBody LoginRequest loginRequest) {
         return userFacade.login(loginRequest.getEmail(), loginRequest.getPassword());
     }
 }

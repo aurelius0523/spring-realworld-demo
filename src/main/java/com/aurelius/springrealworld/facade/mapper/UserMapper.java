@@ -12,7 +12,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class UserMapper extends PageMapper<UserEntity, UserModel>{
+public class UserMapper extends PageMapper<UserEntity, UserModel> {
+    /**
+     * Enrich {@link UserModel} with access token
+     *
+     * @param userEntity user entity
+     * @param token JWT token
+     * @return {@link UserModel} with token field
+     */
+    public UserModel toModel(UserEntity userEntity, String token) {
+        UserModel userModel = toModel(userEntity);
+        userModel.setToken(token);
+
+        return userModel;
+    }
+
     public UserModel toModel(UserEntity userEntity) {
         return UserModel.builder()
                 .bio(userEntity.getBio())

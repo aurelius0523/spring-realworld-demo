@@ -60,12 +60,12 @@ public class UserFacade {
         return userMapper.toModel(savedUserEntity);
     }
 
-    public String login(String username, String password) {
+    public UserModel login(String username, String password) {
         Optional<UserEntity> optionalUserEntity = userRepository.findByEmailAndPassword(username, password);
 
         UserEntity userEntity = optionalUserEntity.orElseThrow(() -> {throw new BusinessValidationException("Invalid username or password");});
 
-        return jwtTokenUtil.generateAccessToken(userEntity);
+        return userMapper.toModel(userEntity, jwtTokenUtil.generateAccessToken(userEntity));
     }
 
     protected void checkIfUsernameExists(String username) {
