@@ -9,6 +9,7 @@ import com.aurelius.springrealworld.repository.UserRepository;
 import com.aurelius.springrealworld.repository.entities.UserEntity;
 import com.aurelius.springrealworld.security.JwtTokenUtil;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +42,13 @@ public class UserFacade {
                 .build());
 
         return userMapper.toModel(savedUserEntity, jwtTokenUtil.generateAccessToken(savedUserEntity));
+    }
+
+    public UserModel getByUserName(String username) {
+        UserEntity userModel = userRepository.findByUsernameEqualsIgnoreCase(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+
+        return userMapper.toModel(userModel);
     }
 
     public PageModel<UserModel> getUserList(int limit, int offset) {

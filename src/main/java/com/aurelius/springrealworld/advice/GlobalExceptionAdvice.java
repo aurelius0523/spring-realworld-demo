@@ -4,6 +4,7 @@ import com.aurelius.springrealworld.exception.BusinessValidationException;
 import com.aurelius.springrealworld.facade.model.ApiErrorModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -48,7 +49,16 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler({RuntimeException.class, Exception.class})
     public @ResponseBody
     ApiErrorModel handleGeneralException(Exception ex) {
-        log.error("Unhandled Exception occured", ex);
+        log.error("Unhandled Exception occurred", ex);
+        return ApiErrorModel.builder()
+                .body(List.of(ex.getMessage()))
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({UsernameNotFoundException.class})
+    public @ResponseBody
+    ApiErrorModel handleUsernameNotFoundException(UsernameNotFoundException ex) {
         return ApiErrorModel.builder()
                 .body(List.of(ex.getMessage()))
                 .build();

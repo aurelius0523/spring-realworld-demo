@@ -7,6 +7,8 @@ import com.aurelius.springrealworld.facade.model.PageModel;
 import com.aurelius.springrealworld.facade.model.UserModel;
 import com.aurelius.springrealworld.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,20 +18,21 @@ import java.util.List;
 @RequestMapping
 public class UserController {
 
-    @Autowired
-    private UserFacade userFacade;
+    private final UserFacade userFacade;
+
+    public UserController(UserFacade userFacade) {this.userFacade = userFacade;}
 
     @PostMapping("/register")
     public UserModel registerUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
         return userFacade.createUser(createUserRequest);
     }
 
-    //    @GetMapping("/user")
-//    public UserModel getCurrentUser() {
-//        return null;
-//    }
-//
-//    @PutMapping("/user")
+    @GetMapping("/user")
+    public UserModel getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
+        return userFacade.getByUserName(userDetails.getUsername());
+    }
+
+    //    @PutMapping("/user")
 //    public UserModel updateCurrentUser() {
 //        return null;
 //    }
