@@ -24,6 +24,7 @@ public class ArticleFacade {
     public PageModel<ArticleModel> getArticleList(String authorUsername, String tag, String favouritedBy, int limit, int offset) {
         QArticleEntity qArticleEntity = QArticleEntity.articleEntity;
         BooleanBuilder where = new BooleanBuilder();
+
         if (StringUtils.hasLength(authorUsername)) {
             where.or(qArticleEntity.author.username.eq(authorUsername));
         }
