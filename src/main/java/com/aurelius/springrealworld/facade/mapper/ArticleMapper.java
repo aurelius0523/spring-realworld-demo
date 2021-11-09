@@ -6,18 +6,23 @@ import com.aurelius.springrealworld.repository.entities.ArticleEntity;
 import com.aurelius.springrealworld.repository.entities.TagEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class ArticleMapper extends PageMapper<ArticleEntity, ArticleModel> {
     public ArticleModel toModel(ArticleEntity articleEntity) {
-        List<String> tagList = articleEntity
-                .getTagEntitySet()
-                .stream()
-                .map(TagEntity::getName)
-                .collect(Collectors.toList());
+        List<String> tagList = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(articleEntity.getTagEntitySet())) {
+            tagList = articleEntity
+                    .getTagEntitySet()
+                    .stream()
+                    .map(TagEntity::getName)
+                    .collect(Collectors.toList());
+        }
 
         return ArticleModel.builder()
                 .slug(articleEntity.getSlug())

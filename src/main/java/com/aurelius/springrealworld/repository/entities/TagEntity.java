@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "tag")

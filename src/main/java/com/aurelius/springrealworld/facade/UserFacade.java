@@ -9,7 +9,6 @@ import com.aurelius.springrealworld.facade.model.UserModel;
 import com.aurelius.springrealworld.repository.UserRepository;
 import com.aurelius.springrealworld.repository.entities.UserEntity;
 import com.aurelius.springrealworld.security.JwtTokenUtil;
-import org.hibernate.sql.Update;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
