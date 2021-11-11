@@ -24,4 +24,7 @@ public class ProfileFacade {
         return profileMapper.toModel(userEntity);
     }
 
+    public ProfileModel followProfileByUsername(String followeeUsername, String followerUsername) {
+        return null;
+    }
 }
