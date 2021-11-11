@@ -42,4 +42,9 @@ public class UserEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "followee_id")
     )
     private Set<UserEntity> followees;
+
+    public boolean isFollower(String followerUsername) {
+        return followers.stream()
+                .anyMatch(follower -> follower.getUsername().equalsIgnoreCase(followerUsername));
+    }
 }
