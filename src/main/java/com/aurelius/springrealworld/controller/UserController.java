@@ -27,7 +27,7 @@ public class UserController {
 
     @GetMapping("/user")
     public UserModel getCurrentUser(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        return userFacade.getByUserName(customUserDetails.getUsername());
+        return userFacade.getByUsername(customUserDetails.getUsername());
     }
 
     @PutMapping("/user")

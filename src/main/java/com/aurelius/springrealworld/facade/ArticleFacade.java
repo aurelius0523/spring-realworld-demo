@@ -40,7 +40,7 @@ public class ArticleFacade {
         BooleanBuilder where = new BooleanBuilder();
 
         if (StringUtils.hasLength(authorUsername)) {
-            where.or(qArticleEntity.author.username.eq(authorUsername));
+            where.or(qArticleEntity.author.username.equalsIgnoreCase(authorUsername));
         }
 
         if (StringUtils.hasLength(tag)) {

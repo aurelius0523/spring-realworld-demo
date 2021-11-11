@@ -45,7 +45,7 @@ public class UserFacade {
         return userMapper.toModel(savedUserEntity, jwtTokenUtil.generateAccessToken(savedUserEntity));
     }
 
-    public UserModel getByUserName(String username) {
+    public UserModel getByUsername(String username) {
         UserEntity userEntity = userRepository.findByUsernameEqualsIgnoreCase(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 
