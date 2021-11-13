@@ -13,6 +13,10 @@ import java.util.Set;
 @Entity(name = "tag")
 @Table(name = "tag", schema = "realworld")
 public class TagEntity extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "name")
     private String name;
 

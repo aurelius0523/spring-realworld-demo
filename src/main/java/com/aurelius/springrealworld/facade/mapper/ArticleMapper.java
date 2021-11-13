@@ -30,7 +30,7 @@ public class ArticleMapper extends PageMapper<ArticleEntity, ArticleModel> {
                 .description(articleEntity.getDescription())
                 .body(articleEntity.getBody())
                 .tagList(tagList)
-                .favourited(articleEntity.isFavourited(viewerUsername))
+                .favourited(articleEntity.isFavouritedBy(viewerUsername))
                 .createdAt(articleEntity.getCreatedAt())
                 .modifiedAt(articleEntity.getModifiedAt())
 //               .author(authorMapper.fromEntity(articleEntity.getAuthor(), viewerUsername))

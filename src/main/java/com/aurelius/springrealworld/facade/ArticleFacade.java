@@ -20,6 +20,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
 import java.util.Set;
 
 @Component
@@ -63,6 +66,8 @@ public class ArticleFacade {
 
     @Transactional
     public ArticleModel createArticle(CreateArticleRequest createArticleRequest, String username) {
+        String slug = slugify(createArticleRequest.getTitle());
+
         createArticleRequest.getTagList()
                 .forEach(this::saveTag);
 
@@ -72,7 +77,7 @@ public class ArticleFacade {
         Set<TagEntity> tagEntities = tagRepository.findByNameIsInIgnoreCase(createArticleRequest.getTagList());
 
         ArticleEntity articleEntity = ArticleEntity.builder()
-                .slug(slugify(createArticleRequest.getTitle()))
+                .slug(slug)
                 .body(createArticleRequest.getBody())
                 .description(createArticleRequest.getDescription())
                 .title(createArticleRequest.getTitle())
@@ -127,11 +132,18 @@ public class ArticleFacade {
         return articleMapper.toModel(articleEntity, unfavouritedBy);
     }
 
+    @Transactional
     protected String slugify(String title) {
         if (!StringUtils.hasLength(title)) {
             return "";
         }
 
-        return title.toLowerCase().trim().replaceAll("\\s+", "-");
+        String slug =  title.toLowerCase().trim().replaceAll("\\s+", "-");
+
+        if (articleRepository.slugExists(slug)) {
+            slug += "-" + new Random().nextInt(1000000);
+        }
+
+        return slug;
     }
 }

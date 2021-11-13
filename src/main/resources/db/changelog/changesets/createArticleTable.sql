@@ -1,7 +1,7 @@
 CREATE TABLE article
 (
     id          SERIAL PRIMARY KEY,
-    slug        varchar(512),
+    slug        varchar(512) UNIQUE,
     title       varchar(256),
     description varchar(512),
     body        text,

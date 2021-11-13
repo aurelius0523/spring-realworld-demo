@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,6 +16,10 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity(name = "article")
 public class ArticleEntity extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "slug")
     private String slug;
 
@@ -45,8 +51,11 @@ public class ArticleEntity extends BaseEntity {
     )
     private Set<UserEntity> favouritedBy;
 
-    public boolean isFavourited(String username) {
-       return favouritedBy.stream()
-               .anyMatch(userEntity -> userEntity.getUsername().equalsIgnoreCase(username)) ;
+    public boolean isFavouritedBy(String username) {
+        if (CollectionUtils.isEmpty(favouritedBy) || !StringUtils.hasLength(username)) {
+            return false;
+        }
+        return favouritedBy.stream()
+                .anyMatch(userEntity -> userEntity.getUsername().equalsIgnoreCase(username));
     }
 }

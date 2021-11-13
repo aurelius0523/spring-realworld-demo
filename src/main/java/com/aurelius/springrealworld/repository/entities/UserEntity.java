@@ -12,6 +12,10 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity(name = "users")
 public class UserEntity extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "email")
     private String email;
 
