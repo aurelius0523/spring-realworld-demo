@@ -18,17 +18,24 @@ public class ArticleController {
     public ArticleController(ArticleFacade articleFacade) {this.articleFacade = articleFacade;}
 
     @GetMapping
-    public PageModel<ArticleModel> getArticles(@RequestParam(value = "author", required = false) String authorUsername,
-                                               @RequestParam(value = "tag", required = false) String tag,
-                                               @RequestParam(value = "favourited", required = false) String favouritedBy,
-                                               @RequestParam(value = "limit", required = false, defaultValue = "20") int limit,
-                                               @RequestParam(value = "offset", required = false, defaultValue = "0") int offset) {
+    public PageModel<ArticleModel> getArticles(
+            @RequestParam(value = "author", required = false) String authorUsername,
+            @RequestParam(value = "tag", required = false) String tag,
+            @RequestParam(value = "favourited", required = false) String favouritedBy,
+            @RequestParam(value = "limit", required = false, defaultValue = "20") int limit,
+            @RequestParam(value = "offset", required = false, defaultValue = "0") int offset) {
         return articleFacade.getArticleList(authorUsername, tag, favouritedBy, limit, offset);
     }
 
     @PostMapping
-    public ArticleModel createArticle(@Valid @RequestBody CreateArticleRequest createArticleRequest,
-                                      @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public ArticleModel createArticle(
+            @Valid @RequestBody CreateArticleRequest createArticleRequest,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         return articleFacade.createArticle(createArticleRequest, customUserDetails.getUsername());
+    }
+
+    @GetMapping("/{slug}")
+    public ArticleModel getArticleBySlug( @PathVariable("slug") String slug ) {
+        return articleFacade.getArticleBySlug(slug);
     }
 }

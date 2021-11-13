@@ -22,14 +22,12 @@ public class UserFacade {
 
     private final UserMapper userMapper;
 
-    private final PasswordEncoder passwordEncoder;
 
     private final JwtTokenUtil jwtTokenUtil;
 
-    public UserFacade(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil) {
+    public UserFacade(UserRepository userRepository, UserMapper userMapper, JwtTokenUtil jwtTokenUtil) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.passwordEncoder = passwordEncoder;
         this.jwtTokenUtil = jwtTokenUtil;
     }
 

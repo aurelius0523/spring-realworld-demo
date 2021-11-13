@@ -1,6 +1,7 @@
 package com.aurelius.springrealworld.advice;
 
 import com.aurelius.springrealworld.exception.BusinessValidationException;
+import com.aurelius.springrealworld.exception.ResourceNotFoundException;
 import com.aurelius.springrealworld.facade.model.ApiErrorModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -56,9 +57,9 @@ public class GlobalExceptionAdvice {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({UsernameNotFoundException.class})
+    @ExceptionHandler({ResourceNotFoundException.class, UsernameNotFoundException.class})
     public @ResponseBody
-    ApiErrorModel handleUsernameNotFoundException(UsernameNotFoundException ex) {
+    ApiErrorModel handleResourceNotFoundException(Exception ex) {
         return ApiErrorModel.builder()
                 .body(List.of(ex.getMessage()))
                 .build();

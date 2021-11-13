@@ -37,4 +37,11 @@ public class ArticleEntity extends BaseEntity {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private UserEntity author;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_article_favourite",
+            joinColumns = @JoinColumn(name = "article_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<UserEntity> favouritedBy;
 }

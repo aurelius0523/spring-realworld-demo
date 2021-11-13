@@ -27,3 +27,10 @@ databaseChangeLog:
         - sqlFile:
             path: changesets/createUserFollowTable.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: createArticleFavourite
+      author: kim.loong.tan
+      changes:
+        - sqlFile:
+            path: changesets/createFavouriteTable.sql
+            relativeToChangelogFile: true

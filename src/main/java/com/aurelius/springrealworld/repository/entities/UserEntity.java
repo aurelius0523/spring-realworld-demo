@@ -43,6 +43,14 @@ public class UserEntity extends BaseEntity {
     )
     private Set<UserEntity> followees;
 
+    @ManyToMany
+    @JoinTable(
+            name="user_article_favourite",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name = "article_id")
+    )
+    private Set<ArticleEntity> likedArticles;
+
     public boolean isFollower(String followerUsername) {
         return followers.stream()
                 .anyMatch(follower -> follower.getUsername().equalsIgnoreCase(followerUsername));

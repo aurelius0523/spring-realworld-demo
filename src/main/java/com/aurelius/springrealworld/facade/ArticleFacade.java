@@ -1,6 +1,7 @@
 package com.aurelius.springrealworld.facade;
 
 import com.aurelius.springrealworld.controller.request.CreateArticleRequest;
+import com.aurelius.springrealworld.exception.ResourceNotFoundException;
 import com.aurelius.springrealworld.facade.mapper.ArticleMapper;
 import com.aurelius.springrealworld.facade.model.ArticleModel;
 import com.aurelius.springrealworld.facade.model.PageModel;
@@ -77,6 +78,13 @@ public class ArticleFacade {
         if (tagRepository.findByName(tag).isEmpty()) {
             tagRepository.save(TagEntity.builder().name(tag).build());
         }
+    }
+
+    public ArticleModel getArticleBySlug(String slug) {
+        ArticleEntity articleEntity = articleRepository.getArticleEntityBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Article with this slug not found"));
+
+        return articleMapper.toModel(articleEntity);
     }
 
     protected String slugify(String title) {
