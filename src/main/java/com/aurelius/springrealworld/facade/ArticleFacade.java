@@ -36,7 +36,13 @@ public class ArticleFacade {
         this.tagRepository = tagRepository;
     }
 
-    public PageModel<ArticleModel> getArticleList(String authorUsername, String tag, String favouritedBy, int limit, int offset) {
+    public PageModel<ArticleModel> getArticleList(
+            String viewerUsername,
+            String authorUsername,
+            String tag,
+            String favouritedBy,
+            int limit,
+            int offset) {
         QArticleEntity qArticleEntity = QArticleEntity.articleEntity;
         BooleanBuilder where = new BooleanBuilder();
 
@@ -48,7 +54,11 @@ public class ArticleFacade {
             where.or(qArticleEntity.tagEntitySet.any().name.eq(tag));
         }
 
-        return articleMapper.fromPageModel(articleRepository.findAll(where, PageRequest.of(offset, limit)));
+        if (StringUtils.hasLength(favouritedBy)) {
+            where.or(qArticleEntity.favouritedBy.any().username.equalsIgnoreCase(favouritedBy));
+        }
+
+        return articleMapper.fromPageModel(articleRepository.findAll(where, PageRequest.of(offset, limit)), viewerUsername);
     }
 
     @Transactional
@@ -70,7 +80,7 @@ public class ArticleFacade {
                 .author(author)
                 .build();
 
-        return articleMapper.toModel(articleRepository.save(articleEntity));
+        return articleMapper.toModel(articleRepository.save(articleEntity), username);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -80,11 +90,41 @@ public class ArticleFacade {
         }
     }
 
-    public ArticleModel getArticleBySlug(String slug) {
+    public ArticleModel getArticleBySlug(String slug, String viewerUsername) {
         ArticleEntity articleEntity = articleRepository.getArticleEntityBySlug(slug)
                 .orElseThrow(() -> new ResourceNotFoundException("Article with this slug not found"));
 
-        return articleMapper.toModel(articleEntity);
+        return articleMapper.toModel(articleEntity, viewerUsername);
+    }
+
+    @Transactional
+    public ArticleModel favouriteArticle(String slug, String favouritedBy) {
+        UserEntity favouritedByEntity = userRepository.findByUsernameEqualsIgnoreCase(favouritedBy)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+
+        ArticleEntity articleEntity = articleRepository.getArticleEntityBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Article with this slug not found"));
+
+        articleEntity.getFavouritedBy().add(favouritedByEntity);
+
+        articleRepository.save(articleEntity);
+
+        return articleMapper.toModel(articleEntity, favouritedBy);
+    }
+
+    @Transactional
+    public ArticleModel unfavouriteArticle(String slug, String unfavouritedBy) {
+        UserEntity unfavouritedByEntity = userRepository.findByUsernameEqualsIgnoreCase(unfavouritedBy)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+
+        ArticleEntity articleEntity = articleRepository.getArticleEntityBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Article with this slug not found"));
+
+        articleEntity.getFavouritedBy().remove(unfavouritedByEntity);
+
+        articleRepository.save(articleEntity);
+
+        return articleMapper.toModel(articleEntity, unfavouritedBy);
     }
 
     protected String slugify(String title) {

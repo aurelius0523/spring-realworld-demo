@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class ArticleMapper extends PageMapper<ArticleEntity, ArticleModel> {
-    public ArticleModel toModel(ArticleEntity articleEntity) {
+    public ArticleModel toModel(ArticleEntity articleEntity, String viewerUsername) {
         List<String> tagList = new ArrayList<>();
         if (!CollectionUtils.isEmpty(articleEntity.getTagEntitySet())) {
             tagList = articleEntity
@@ -30,17 +30,18 @@ public class ArticleMapper extends PageMapper<ArticleEntity, ArticleModel> {
                 .description(articleEntity.getDescription())
                 .body(articleEntity.getBody())
                 .tagList(tagList)
+                .favourited(articleEntity.isFavourited(viewerUsername))
                 .createdAt(articleEntity.getCreatedAt())
                 .modifiedAt(articleEntity.getModifiedAt())
 //               .author(authorMapper.fromEntity(articleEntity.getAuthor(), viewerUsername))
                 .build();
     }
 
-    public PageModel<ArticleModel> fromPageModel(Page<ArticleEntity> articleEntityPage) {
+    public PageModel<ArticleModel> fromPageModel(Page<ArticleEntity> articleEntityPage, String viewerUsername) {
         PageModel<ArticleModel> pagedArticleModel = super.fromPage(articleEntityPage);
         pagedArticleModel.setData(articleEntityPage
                 .stream()
-                .map(this::toModel)
+                .map(articleEntity -> toModel(articleEntity, viewerUsername))
                 .collect(Collectors.toList()));
 
         return pagedArticleModel;

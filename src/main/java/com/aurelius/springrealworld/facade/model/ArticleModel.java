@@ -16,7 +16,7 @@ public class ArticleModel {
     private List<String> tagList;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-//    private boolean favourited;
+    private boolean favourited;
 //    private int favouritesCont;
 //    private AuthorDto author;
 }

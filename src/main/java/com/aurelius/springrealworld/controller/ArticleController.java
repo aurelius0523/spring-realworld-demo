@@ -21,10 +21,11 @@ public class ArticleController {
     public PageModel<ArticleModel> getArticles(
             @RequestParam(value = "author", required = false) String authorUsername,
             @RequestParam(value = "tag", required = false) String tag,
-            @RequestParam(value = "favourited", required = false) String favouritedBy,
+            @RequestParam(value = "favouritedBy", required = false) String favouritedBy,
             @RequestParam(value = "limit", required = false, defaultValue = "20") int limit,
-            @RequestParam(value = "offset", required = false, defaultValue = "0") int offset) {
-        return articleFacade.getArticleList(authorUsername, tag, favouritedBy, limit, offset);
+            @RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return articleFacade.getArticleList(customUserDetails.getUsername(), authorUsername, tag, favouritedBy, limit, offset);
     }
 
     @PostMapping
@@ -35,7 +36,21 @@ public class ArticleController {
     }
 
     @GetMapping("/{slug}")
-    public ArticleModel getArticleBySlug( @PathVariable("slug") String slug ) {
-        return articleFacade.getArticleBySlug(slug);
+    public ArticleModel getArticleBySlug(@PathVariable("slug") String slug, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return articleFacade.getArticleBySlug(slug, customUserDetails.getUsername());
+    }
+
+    @PostMapping("/{slug}/favourite")
+    public ArticleModel favouriteArticle(
+            @PathVariable("slug") String slug,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return articleFacade.favouriteArticle(slug, customUserDetails.getUsername());
+    }
+
+    @DeleteMapping("/{slug}/favourite")
+    public ArticleModel unfavouriteArticle(
+            @PathVariable("slug") String slug,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return articleFacade.unfavouriteArticle(slug, customUserDetails.getUsername());
     }
 }

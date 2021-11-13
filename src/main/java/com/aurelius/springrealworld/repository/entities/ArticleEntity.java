@@ -44,4 +44,9 @@ public class ArticleEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<UserEntity> favouritedBy;
+
+    public boolean isFavourited(String username) {
+       return favouritedBy.stream()
+               .anyMatch(userEntity -> userEntity.getUsername().equalsIgnoreCase(username)) ;
+    }
 }
