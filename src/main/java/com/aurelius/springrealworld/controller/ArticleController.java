@@ -53,4 +53,12 @@ public class ArticleController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         return articleFacade.unfavouriteArticle(slug, customUserDetails.getUsername());
     }
+
+    @GetMapping("/feeds")
+    public PageModel<ArticleModel> getFeeds(
+            @RequestParam(value = "limit", required = false, defaultValue = "20") int limit,
+            @RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return articleFacade.getFeed(customUserDetails.getUsername(), limit, offset);
+    }
 }

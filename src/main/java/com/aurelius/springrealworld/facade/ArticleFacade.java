@@ -14,6 +14,7 @@ import com.aurelius.springrealworld.repository.entities.TagEntity;
 import com.aurelius.springrealworld.repository.entities.UserEntity;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,13 +40,23 @@ public class ArticleFacade {
         this.tagRepository = tagRepository;
     }
 
-    public PageModel<ArticleModel> getArticleList(
-            String viewerUsername,
-            String authorUsername,
-            String tag,
-            String favouritedBy,
-            int limit,
-            int offset) {
+    public PageModel<ArticleModel> getFeed(String viewerUsername,
+                                           int limit,
+                                           int offset) {
+        QArticleEntity qArticleEntity = QArticleEntity.articleEntity;
+        BooleanBuilder where = new BooleanBuilder(qArticleEntity.author.followers.any().username.equalsIgnoreCase(viewerUsername));
+
+        return articleMapper.fromPageModel(
+                articleRepository.findAll(where, PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"))),
+                viewerUsername);
+    }
+
+    public PageModel<ArticleModel> getArticleList(String viewerUsername,
+                                                  String authorUsername,
+                                                  String tag,
+                                                  String favouritedBy,
+                                                  int limit,
+                                                  int offset) {
         QArticleEntity qArticleEntity = QArticleEntity.articleEntity;
         BooleanBuilder where = new BooleanBuilder();
 
@@ -59,9 +70,12 @@ public class ArticleFacade {
 
         if (StringUtils.hasLength(favouritedBy)) {
             where.or(qArticleEntity.favouritedBy.any().username.equalsIgnoreCase(favouritedBy));
+
         }
 
-        return articleMapper.fromPageModel(articleRepository.findAll(where, PageRequest.of(offset, limit)), viewerUsername);
+        return articleMapper.fromPageModel(
+                articleRepository.findAll(where, PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"))),
+                viewerUsername);
     }
 
     @Transactional
@@ -138,7 +152,7 @@ public class ArticleFacade {
             return "";
         }
 
-        String slug =  title.toLowerCase().trim().replaceAll("\\s+", "-");
+        String slug = title.toLowerCase().trim().replaceAll("\\s+", "-");
 
         if (articleRepository.slugExists(slug)) {
             slug += "-" + new Random().nextInt(1000000);
