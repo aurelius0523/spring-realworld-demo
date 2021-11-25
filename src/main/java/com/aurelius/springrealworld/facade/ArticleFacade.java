@@ -1,6 +1,7 @@
 package com.aurelius.springrealworld.facade;
 
 import com.aurelius.springrealworld.controller.request.CreateArticleRequest;
+import com.aurelius.springrealworld.controller.request.UpdateArticleRequest;
 import com.aurelius.springrealworld.exception.ResourceNotFoundException;
 import com.aurelius.springrealworld.facade.mapper.ArticleMapper;
 import com.aurelius.springrealworld.facade.model.ArticleModel;
@@ -19,8 +20,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -148,8 +151,8 @@ public class ArticleFacade {
     public void deleteArticle(String slug) {
         final long articleDeletedCount = articleRepository.deleteBySlug(slug);
 
-        if(articleDeletedCount == 0) {
-           throw new ResourceNotFoundException("Article not found");
+        if (articleDeletedCount == 0) {
+            throw new ResourceNotFoundException("Article not found");
         }
     }
 
@@ -166,5 +169,33 @@ public class ArticleFacade {
         }
 
         return slug;
+    }
+
+    @Transactional
+    public ArticleModel updateArticle(UpdateArticleRequest updateArticleRequest, String slug, String viewerUsername) {
+        return articleRepository.findBySlug(slug)
+                .map(articleEntity -> {
+                    if (StringUtils.hasLength(updateArticleRequest.getBody())) {
+                        articleEntity.setBody(updateArticleRequest.getBody());
+                    }
+
+                    if (StringUtils.hasLength(updateArticleRequest.getTitle())) {
+                        articleEntity.setTitle(updateArticleRequest.getTitle());
+                    }
+
+                    if (StringUtils.hasLength(updateArticleRequest.getDescription())) {
+                        articleEntity.setDescription(updateArticleRequest.getDescription());
+                    }
+
+                    if (!CollectionUtils.isEmpty(updateArticleRequest.getTagList())) {
+                        updateArticleRequest.getTagList()
+                                .forEach(this::saveTag);
+
+                        articleEntity.setTagEntitySet(tagRepository.findByNameIsInIgnoreCase(updateArticleRequest.getTagList()));
+                    }
+
+                    return articleMapper.toModel(articleRepository.save(articleEntity), viewerUsername);
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("Article with this slug not found"));
     }
 }

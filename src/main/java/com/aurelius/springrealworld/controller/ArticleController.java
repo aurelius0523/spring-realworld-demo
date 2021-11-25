@@ -1,6 +1,7 @@
 package com.aurelius.springrealworld.controller;
 
 import com.aurelius.springrealworld.controller.request.CreateArticleRequest;
+import com.aurelius.springrealworld.controller.request.UpdateArticleRequest;
 import com.aurelius.springrealworld.facade.ArticleFacade;
 import com.aurelius.springrealworld.facade.model.ArticleModel;
 import com.aurelius.springrealworld.facade.model.PageModel;
@@ -65,5 +66,12 @@ public class ArticleController {
     @DeleteMapping("/{slug}")
     public void deleteArticle(@PathVariable("slug") String slug) {
         articleFacade.deleteArticle(slug);
+    }
+
+    @PutMapping("/{slug}")
+    public ArticleModel updateArticle(@RequestBody @Valid UpdateArticleRequest request,
+                                      @PathVariable("slug") String slug,
+                                      @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return articleFacade.updateArticle(request, slug, customUserDetails.getUsername());
     }
 }

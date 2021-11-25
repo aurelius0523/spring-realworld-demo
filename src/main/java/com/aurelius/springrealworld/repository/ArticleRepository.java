@@ -16,4 +16,5 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Long>, Q
     boolean slugExists(String slug);
 
     long deleteBySlug(String slug);
+    Optional<ArticleEntity> findBySlug(String slug);
 }
