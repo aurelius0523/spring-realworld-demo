@@ -145,6 +145,15 @@ public class ArticleFacade {
     }
 
     @Transactional
+    public void deleteArticle(String slug) {
+        final long articleDeletedCount = articleRepository.deleteBySlug(slug);
+
+        if(articleDeletedCount == 0) {
+           throw new ResourceNotFoundException("Article not found");
+        }
+    }
+
+    @Transactional
     protected String slugify(String title) {
         if (!StringUtils.hasLength(title)) {
             return "";

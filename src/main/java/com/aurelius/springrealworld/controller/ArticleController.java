@@ -61,4 +61,9 @@ public class ArticleController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         return articleFacade.getFeed(customUserDetails.getUsername(), limit, offset);
     }
+
+    @DeleteMapping("/{slug}")
+    public void deleteArticle(@PathVariable("slug") String slug) {
+        articleFacade.deleteArticle(slug);
+    }
 }

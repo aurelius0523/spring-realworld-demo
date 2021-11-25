@@ -14,4 +14,6 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Long>, Q
 
     @Query("select (count(a) > 0) from article a where upper(a.slug) = upper(?1)")
     boolean slugExists(String slug);
+
+    long deleteBySlug(String slug);
 }
