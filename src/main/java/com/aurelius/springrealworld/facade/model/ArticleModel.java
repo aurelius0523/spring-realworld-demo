@@ -18,5 +18,5 @@ public class ArticleModel {
     private LocalDateTime modifiedAt;
     private boolean favourited;
 //    private int favouritesCont;
-//    private AuthorDto author;
+    private ProfileModel author;
 }

@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 
 @Component
 public class ArticleMapper extends PageMapper<ArticleEntity, ArticleModel> {
+    private final ProfileMapper profileMapper;
+
+    public ArticleMapper(ProfileMapper profileMapper) {this.profileMapper = profileMapper;}
+
     public ArticleModel toModel(ArticleEntity articleEntity, String viewerUsername) {
         List<String> tagList = new ArrayList<>();
         if (!CollectionUtils.isEmpty(articleEntity.getTagEntitySet())) {
@@ -33,7 +37,7 @@ public class ArticleMapper extends PageMapper<ArticleEntity, ArticleModel> {
                 .favourited(articleEntity.isFavouritedBy(viewerUsername))
                 .createdAt(articleEntity.getCreatedAt())
                 .modifiedAt(articleEntity.getModifiedAt())
-//               .author(authorMapper.fromEntity(articleEntity.getAuthor(), viewerUsername))
+                .author(profileMapper.toModel(articleEntity.getAuthor(), viewerUsername))
                 .build();
     }
 

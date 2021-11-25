@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProfileMapper {
-
     public ProfileModel toModel(UserEntity userEntity) {
         return ProfileModel.builder()
                 .bio(userEntity.getBio())
