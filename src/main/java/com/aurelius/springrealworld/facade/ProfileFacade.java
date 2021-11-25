@@ -2,14 +2,11 @@ package com.aurelius.springrealworld.facade;
 
 import com.aurelius.springrealworld.facade.mapper.ProfileMapper;
 import com.aurelius.springrealworld.facade.model.ProfileModel;
-import com.aurelius.springrealworld.facade.model.UserModel;
 import com.aurelius.springrealworld.repository.UserRepository;
 import com.aurelius.springrealworld.repository.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class ProfileFacade {

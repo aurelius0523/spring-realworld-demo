@@ -11,7 +11,6 @@ import com.aurelius.springrealworld.repository.entities.UserEntity;
 import com.aurelius.springrealworld.security.JwtTokenUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
